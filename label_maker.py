@@ -1,5 +1,6 @@
 import argparse
 import textwrap
+from pathlib import Path
 
 from config import setup_logging
 from inputs import user_input
@@ -29,12 +30,23 @@ def main():
         ),
     )
     parser.add_argument(
-        'data_input',
+        'data-input',
         choices=['file', 'user'],
         default='file',
         const='file',
         nargs='?',
     )
+
+    parser.add_argument(
+        '-i',
+        '--input-file',
+        type=Path,
+        default='input/sample_data.csv',
+        const='input/sample_data.csv',
+        nargs='?',
+        help='specify input data csv file(defaults to: %(default)s)',
+    )
+
     args = parser.parse_args()
 
     data = []
@@ -42,7 +54,7 @@ def main():
 
     if data_input == 'file':
         # TODO: vyměnit za argument argparse
-        file_path = 'input/sample_data.csv'
+        file_path = args.input_file
         data = csv_input(file_path)
     elif data_input == 'user':
         data = user_input()
