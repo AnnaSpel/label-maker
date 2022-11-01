@@ -1,3 +1,6 @@
+import argparse
+import textwrap
+
 from config import setup_logging
 from inputs import user_input
 
@@ -13,6 +16,20 @@ log = logging.getLogger(__name__)
 
 def main():
     log.info(' program start '.center(80, '-'))
+
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=textwrap.dedent(
+            '''\
+            Label Maker
+            Defaults to user input from console.
+            If you wish, you may specify input and template file.
+            Input must be a csv file, output then a jinja formatted docx.
+            '''
+        ),
+    )
+    args = parser.parse_args()
+
     data = []
     data_input = 'file'
 
