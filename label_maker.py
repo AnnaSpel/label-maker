@@ -53,7 +53,6 @@ def main():
     data_input = args.data_input
 
     if data_input == 'file':
-        # TODO: vyměnit za argument argparse
         file_path = args.input_file
         data = csv_input(file_path)
     elif data_input == 'user':
