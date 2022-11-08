@@ -1,23 +1,17 @@
 import argparse
+import logging
 import textwrap
 from pathlib import Path
 
-from config import setup_logging
-from inputs import user_input
-
-setup_logging()
-import logging
-
 from calc import calculate_unit_price
-from inputs import csv_input
+from inputs import csv_input, user_input
 from outputs import to_word
 
 log = logging.getLogger(__name__)
 
 
-def main():
-    log.info(' program start '.center(80, '-'))
-
+def cli_main(args):
+    log.info('cli start')
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(
@@ -47,13 +41,12 @@ def main():
         help='specify input data csv file(defaults to: %(default)s)',
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     data = []
     data_input = args.data_input
 
     if data_input == 'file':
-        # TODO: vyměnit za argument argparse
         file_path = args.input_file
         data = csv_input(file_path)
     elif data_input == 'user':
@@ -65,7 +58,3 @@ def main():
     calculated_data = calculate_unit_price(data)
     to_word(calculated_data, 'templates/labels_template.docx')
     log.info(' program end '.center(80, '-'))
-
-
-if __name__ == '__main__':
-    main()
